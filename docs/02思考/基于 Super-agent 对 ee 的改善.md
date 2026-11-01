@@ -5,7 +5,9 @@ tags:
   - 思考方法
   - 陪伴机器人
   - 记忆模块
-description: "读完 DeepSeek《Super-agent 设计探索》后，对比其架构与自家 ee 项目在整体框架、上下文注入上的异同，并由此规划 ee 后续的云端部署、上下文压缩与存算分离方案。"
+  - DeepSeek
+  - Super-agent
+description: 读完 DeepSeek《Super-agent 设计探索》后，对比其架构与自家 ee 项目在整体框架、上下文注入上的异同，并由此规划 ee 后续的云端部署、上下文压缩与存算分离方案。
 slug: super-agent-ee-architecture
 ---
 今天读完了 deepseek 发布的《[Super-agent 设计探索：迈向更自主的 Agent 系统](https://www.bilibili.com/opus/1265361021143351318?spm_id_from=333.1007.0.0)》，既发现了与 ee 类似的架构，也大概清楚 v2 该怎么开发。
