@@ -11,9 +11,6 @@ slug: spring-dependency-injection
 
 Spring 框架的本质：**Dependency Injection Container（依赖注入容器）**。这是一个偏正短语，也就是说，重点是后面的“容器”。简单来讲，就是一个管家。一个框架的提出，必然是为了解决一个问题。Spring 也是如此，它解决的是“依赖地狱”的问题。
 
-> 相关：[[02思考/初遇 Spring Boot|初遇 Spring Boot]] —— 旧文讲的是 Spring Boot 把功能封装、靠贴标签就能用，正对应你这篇说的"告诉管家哪些类归它管"，读完这篇再看旧文能把注解和容器串起来。
-
-
 ## 依赖地狱
 ---
 下面介绍“依赖”地狱这个问题，是怎么来的。
