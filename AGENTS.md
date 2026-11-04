@@ -36,13 +36,13 @@
 
 ## 工作区
 
-- `python` 指向哪个解释器不确定，直接调用 `.venv/bin/python`。
+- Python 环境用 conda 的 `writing` 环境（`conda create -n writing python=3.12`，再 `pip install -r requirements.txt`），命令写成 `conda run -n writing python …`，不要建 `.venv`。
 - 验证、诊断码语义、字体缓存见 [构建与验证](06-构建与验证.md)：**交付前跑单测和构建、构建失败或 `.cache/fonts/` 缺失时读它**。
 - 设计文档、ADR、开发日志和 Agent 约定放 `开发文档/`，不要放进 `docs/`——那是 Obsidian 仓库，多出一级文件夹会让构建报错。模板和站点样式放 `theme/`，构建代码放 `tools/`。
 
 ## matt 流程与文档
 
-- 研发流程用 `.claude/skills/` 里的 matt 套件，命令清单和各步用法见总库 `~/Workspace/Tools/Skills/dev/README.md`。
+- 研发流程用 `.claude/skills/` 里的 matt 套件，命令清单和各步用法见总库 `/run/media/finderzly/E/WorkSpace/Tools/Skills/dev/README.md`。
 - 技能里写的 `docs/agents/` 在本仓库对应 `开发文档/agents/`（`docs/` 是 Obsidian 仓库）。
 - 跑 `/arch` 时读写 `开发文档/agents/developer.md`：该文件尚未创建，按技能要求现场创建，别读 `docs/agents/developer.md`。
 - 本地 issue tracker 计划放根目录 `.scratch/`，随 git 提交，但**目前还没创建**；首次执行需要它的流程前，先读 `开发文档/agents/issue-tracker.md` 按其约定建目录。别把这个文件追加上 Git 让本地状态进入公开仓库。
@@ -54,4 +54,4 @@ README 的章节取舍由作者决定。曾经加进去、之后被作者删除�
 
 ## 现状说明
 
-通用约定（沟通、执行、测试、工具）同步自作者的全局规则 `~/Workspace/Tools/AGENTS.md`，那边已加载，本文件不复制；项目事实、历史决策和对外契约以本文件及 `开发文档/` 为准。
+通用约定（沟通、执行、测试、工具）同步自作者的全局规则 `/run/media/finderzly/E/WorkSpace/Tools/AGENTS.md`，那边已加载，本文件不复制；项目事实、历史决策和对外契约以本文件及 `开发文档/` 为准。

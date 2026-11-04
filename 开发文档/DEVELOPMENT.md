@@ -41,7 +41,7 @@
 - 新增（全部文章、404）：全部文章页标题后面垫大号文章总数，阶段筛选按钮按阶段着色，列表按月分组，被筛空的月份一起隐藏；404 页有大号淡色“404”。
 - 新增（字体）：标题、大字、数字和可爱小字用本站托管的字体（Noto Sans SC Black、ZCOOL KuaiLe、Zilla Slab、Gochi Hand，均为 OFL），构建时按页面实际用到的字子集化成 woff2，全站约 84 KB；正文用系统字体，不再依赖任何境外字体服务。新增 `tools/fonts.py`、`tools/fetch_fonts.py`，源字体不进仓库，本地和 CI 都从 google/fonts 的固定提交下载并校验 SHA-256（`.cache/fonts/`），`requirements.txt` 增加 fonttools 和 brotli。
 - 修复：验收时发现第二个淡色大字会取英文字母（如“RY”“ca”），改为只取汉字。
-- 兼容性：网址、发布范围、筛选参数和 Giscus 映射都不变，旧评论照常显示。本地构建前需要先运行一次 `.venv/bin/python -m tools.fetch_fonts`。
+- 兼容性：网址、发布范围、筛选参数和 Giscus 映射都不变，旧评论照常显示。本地构建前需要先运行一次 `conda run -n writing python -m tools.fetch_fonts`。
 
 ## 2026-10-26 — 5.0.0
 
