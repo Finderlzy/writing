@@ -5,7 +5,8 @@ tags:
   - 大语言模型
   - 学习
   - 思考方法
-description: "学习一天 transformer 后，用比喻描述推理时 token 在注意力与 MLP 层中如何移动，以及训练时参数如何沿最陡方向一步步下山，并定量补充了 MLP 层的升维与激活过程。"
+  - 哲学
+description: 学习一天 transformer 后，用比喻描述推理时 token 在注意力与 MLP 层中如何移动，以及训练时参数如何沿最陡方向一步步下山，并定量补充了 MLP 层的升维与激活过程。
 slug: transformer-intuition
 ---
 该从哪里开始讲这个神奇的东西呢？
