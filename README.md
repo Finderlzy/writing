@@ -20,9 +20,6 @@
 
 - `04博客` 下的子文件夹是一组系列博客，比如订阅教程的 `原理版/`、`操作版/`。首页只放 `04博客` 根目录里代表系列的那篇，系列里的各篇在全部文章里，文章页能顺着系列往下读。新建系列时要在 `tools/content.py` 的 `SERIES` 里登记入口篇，否则构建报错。
 
-## 外观
-
-标题、大字和数字用的字体（Noto Sans SC、ZCOOL KuaiLe、Zilla Slab、Gochi Hand，都是 OFL 授权）放在本站，构建时只保留页面上用到的字，全站约 84 KB；正文用读者系统自带的字体。网站不从 Google Fonts 等境外服务加载任何东西。源字体约 19 MB，不放进仓库，构建前从 google/fonts 的固定版本下载并校验，来源记在 `theme/fonts/README.md`。
 
 ## Obsidian 设置
 
