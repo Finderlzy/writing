@@ -57,6 +57,13 @@ jobs:
         with:
           path: public
 
+      # 给后面的 blogger 任务用：取文章标题、标签和正文
+      - name: Upload content index
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-index
+          path: public/static/contentIndex.json
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -67,3 +74,31 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # 部署成功后，把这次新增的文章以「摘要 + 原文链接」发到 Blogger
+  blogger:
+    needs: deploy
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Download content index
+        uses: actions/download-artifact@v4
+        with:
+          name: content-index
+          path: public/static
+
+      - name: Post new articles to Blogger
+        env:
+          BLOGGER_POST_EMAIL: ${{ secrets.BLOGGER_POST_EMAIL }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: >-
+          python3 scripts/post_to_blogger.py
+          --base "${{ github.event.before }}"
+          --head "${{ github.sha }}"
