@@ -1,44 +1,57 @@
 @use "sass:map";
 @use "./variables.scss" as *;
 
-// ---- 标签页用单栏（full-width frame）；文章页和首页保持 Quartz 默认三栏 ----
-$column: 720px;
+// ============================================================================
+// 仿 karpathy.github.io 的老派极简风（Jekyll 早期 minima 主题）：
+// 纯白底、单栏 800px、无衬线字、顶上一条 5px 深色粗线、蓝色链接不带下划线。
+// 数值大多照搬它的 main.css；中文字号和字重略作调整，免得太细太挤。
+// 全站单栏由 quartz.config.yaml 的 byPageType.*.template: full-width 决定。
+// ============================================================================
 
+$column: 800px; // 标签页单栏的宽度
+$gutter: 30px;
+$gutterMobile: 12px;
+
+// ---- 标签页用单栏（full-width frame）；文章页和首页保持 Quartz 默认三栏 ----
 .page[data-frame="full-width"] > #quartz-body {
-  max-width: calc(#{$column} + 2rem);
+  max-width: $column;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 $gutter;
+  @media all and ($mobile) {
+    padding: 0 $gutterMobile;
+  }
 
   & .center.full-width {
     margin: 0;
   }
 
-  // 单栏页的正文列居中，顶栏站名跟着它对齐（选择器更具体，盖过下面顶栏的默认算法）
+  // 单栏页的顶栏：站名和图标对齐这一列的左右边缘
   & .page-header header {
-    padding-inline: max(1rem, calc((100vw - #{$column}) / 2 - 1rem));
+    padding-inline: max(#{$gutter}, calc((100vw - #{$column}) / 2));
+    @media all and ($mobile) {
+      padding-inline: $gutterMobile;
+    }
   }
 }
 
-// ---- 字体：用系统自带的中文宋体（衬线），不下载网络字体 ----
-// 系统字体有针对屏幕的微调，最清楚；国内也打不开 Google Fonts。
-// 西文放最前：英文和数字用西文衬线，中文落到后面的宋体。
-//   Mac：Songti SC（宋体-简）；Linux：思源宋体（Noto Serif CJK SC，需安装）；
-//   Windows 没有好的屏幕宋体，会落到 SimSun。
+// ---- 字体：系统无衬线，不下载网络字体 ----
+// 西文 Helvetica/Arial；中文依次落到 苹方、冬青黑、思源黑体（Linux）、微软雅黑。
 // config 里 typography 的名字只给 OG 分享图用（fontOrigin: local 时浏览器不加载它）。
-$serif:
-  "Iowan Old Style", Georgia, "Songti SC", "Noto Serif CJK SC", "Noto Serif SC",
-  "Source Han Serif SC", "Source Han Serif CN", "STSong", serif;
+$sans:
+  Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Noto Sans SC",
+  "Source Han Sans SC", "Microsoft YaHei", sans-serif;
 
 :root:root {
-  --titleFont: #{$serif};
-  --headerFont: #{$serif};
-  --bodyFont: #{$serif};
+  --code-bg: #eef;
+  --code-border: #d5d5e9;
+  --titleFont: #{$sans};
+  --headerFont: #{$sans};
+  --bodyFont: #{$sans};
 }
 
 body {
-  line-height: 1.8;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 article {
@@ -50,17 +63,17 @@ article li {
   text-align: justify;
 }
 
-// ---- 顶栏：固定在窗口最上方、横跨整个窗口；左边站名，右边搜索和夜间模式 ----
-$barHeight: 3.5rem;
+// ---- 顶栏：横跨整个窗口，上面一条 5px 粗线、下面一条细线；不固定，随页面滚走 ----
+// 用 absolute 而不是 fixed：它的祖先都没有定位，所以相对整页定位，滚动时跟着走。
+$barHeight: 56px;
 $pageMax: calc(#{map.get($breakpoints, desktop)} + 300px); // 同 base.scss 里 .page 的 max-width
 $colGap: 5px; // 同 variables.scss 里栅格的 columnGap
 
 .page-header header {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  // 宽度用 100vw 而不是 left/right: 0：base.scss 给 html 设了 width: 100vw（含滚动条），
-  // 页面在 100vw 里居中。顶栏用同一个基准，左右内边距才能和正文两边对上（右边多出的部分藏在滚动条下面）。
+  // 宽度用 100vw：base.scss 给 html 设了 width: 100vw，页面在 100vw 里居中，用同一基准才对得齐
   width: 100vw;
   z-index: 100;
   height: $barHeight;
@@ -82,34 +95,32 @@ $colGap: 5px; // 同 variables.scss 里栅格的 columnGap
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  // 不能用 backdrop-filter 毛玻璃：它会让顶栏成为 fixed 子元素的定位容器，
-  // 搜索弹窗（fixed 全屏、就在顶栏里面）会被关进顶栏这一条里。
   background: var(--light);
+  border-top: 5px solid var(--darkgray);
   border-bottom: 1px solid var(--lightgray);
 
   & h2.page-title {
     margin: 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: -1px;
     line-height: 1;
   }
 
-  & .page-title a {
-    color: var(--dark);
+  & .page-title a,
+  & .page-title a:visited {
+    color: var(--darkgray);
   }
 
-  // 右边两个按钮：同样 32×32，图标居中，这样才对得齐
-  // 按钮 32px、图标 18px，图标离按钮右边有 7px 空白；整组往右挪 7px，让看得见的图标贴齐正文右边缘
+  // 按钮 32px、图标 16px，整组往右挪，让看得见的图标贴齐正文右边缘
   & .flex-component {
     align-items: center;
-    margin-right: calc((18px - 2rem) / 2);
+    margin-right: calc((16px - 2rem) / 2);
   }
 
   & .flex-component > div {
     display: flex;
     align-items: center;
-
     // 没有其他语言版本时语言切换不渲染，留下的空壳不能占一个间距
     &:empty {
       display: none;
@@ -132,19 +143,20 @@ $colGap: 5px; // 同 variables.scss 里栅格的 columnGap
     padding: 0;
     background: none;
     border: none;
-    border-radius: 6px;
+    border-radius: 0;
     cursor: pointer;
-
-    &:hover {
-      background: var(--highlight);
-    }
 
     // darkmode 插件把图标写成 absolute + top: 6px，这里改回正常流，让 flex 居中
     & > svg {
       position: static;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       margin: 0;
+      fill: var(--gray);
+    }
+
+    &:hover > svg {
+      fill: var(--dark);
     }
   }
 
@@ -154,71 +166,77 @@ $colGap: 5px; // 同 variables.scss 里栅格的 columnGap
   }
 }
 
-// 顶栏是 fixed 的，下面的东西要让出它的高度
+// 顶栏脱离了文档流，下面的东西要让出它的高度
 #quartz-body .page-header {
-  margin-top: calc(#{$barHeight} + 2rem);
+  margin-top: calc(#{$barHeight} + 30px);
 }
 
-// 侧栏只在它是“粘在屏幕上的一整列”时才需要让位，断点跟 base.scss 一致：
-// 左栏在手机上变成横排，右栏在非桌面宽度变成正文下方的一行，那时不能给它们定高。
+// 侧栏在页面顶端时也要让开顶栏（滚动后顶栏已经滚走，粘在 top: 0 正好）
 @media all and not ($mobile) {
   #quartz-body .sidebar.left {
-    top: $barHeight;
-    height: calc(100vh - #{$barHeight});
-    padding-top: 2rem;
+    padding-top: calc(#{$barHeight} + 30px);
   }
 }
 
 @media all and ($desktop) {
   #quartz-body .sidebar.right {
-    top: $barHeight;
-    height: calc(100vh - #{$barHeight});
-    padding-top: 2rem;
+    padding-top: calc(#{$barHeight} + 30px);
   }
 }
 
-// ---- 首页文章列表 ----
+// ---- 链接：老式蓝，平时无下划线，悬停变黑加下划线 ----
+a,
+a.internal,
+a.external {
+  color: var(--secondary);
+  background-color: transparent;
+  padding: 0;
+  font-weight: inherit;
+  text-decoration: none;
+  &:visited {
+    color: var(--tertiary);
+  }
+  &:hover {
+    color: var(--dark);
+    text-decoration: underline;
+  }
+}
+
+// ---- 首页文章列表：日期一行小灰字在上，标题在下 ----
 .post-list {
   list-style: none;
   padding: 0;
-  margin: 1rem 0 0;
+  margin: 0;
 
   & > .post {
-    margin: 0 0 2.2rem;
-  }
-
-  & .post-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--dark);
-    background: none;
-    padding: 0;
-    &:hover {
-      color: var(--secondary);
-    }
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 30px;
   }
 
   & .post-meta {
-    margin-top: 0.15rem;
-    font-size: 0.85rem;
+    order: -1;
+    font-size: 15px;
+    line-height: 1.5;
     color: var(--gray);
     display: flex;
     flex-wrap: wrap;
     gap: 0 0.7rem;
   }
 
-  & .post-tag {
+  & .post-title {
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    line-height: 1.3;
+  }
+
+  & .post-tag,
+  & .post-tag:visited {
     color: var(--gray);
-    background: none;
-    padding: 0;
-    font-weight: normal;
-    &:hover {
-      color: var(--secondary);
-    }
   }
 
   & .post-desc {
-    margin: 0.4rem 0 0;
+    margin: 0.3rem 0 0;
     color: var(--darkgray);
     text-align: justify;
   }
@@ -230,64 +248,117 @@ body[data-slug="en/index"] .center > hr {
   display: none;
 }
 
-// ---- 文章页：标题、日期、标签都收得小一点 ----
+// ---- 文章页 ----
 .page-header .popover-hint {
   & .article-title {
-    margin: 1.5rem 0 0.25rem;
-    font-size: 2rem;
-    line-height: 1.35;
+    margin: 10px 0 0;
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: -1px;
+    line-height: 1.25;
   }
 
   & .content-meta {
-    margin: 0;
+    margin: 5px 0 0;
     color: var(--gray);
-    font-size: 0.85rem;
+    font-size: 15px;
   }
 
-  // 标签：一行小灰字，不要胶囊
   & .tags {
-    margin: 0.3rem 0 1rem;
+    margin: 0.2rem 0 30px;
     gap: 0 0.7rem;
     & .tag-link {
       background: none;
       padding: 0;
       border-radius: 0;
-      font-size: 0.8rem;
+      font-size: 14px;
       color: var(--gray);
-      &:hover {
-        color: var(--secondary);
-      }
     }
   }
 }
 
-// 链接：不要背景色块，用细下划线
-a.internal,
-a.external {
-  background-color: transparent;
-  padding: 0;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--secondary) 35%, transparent);
-  text-underline-offset: 0.2em;
-  &:hover {
-    text-decoration-color: var(--secondary);
+article {
+  & h1,
+  & h2,
+  & h3,
+  & h4 {
+    font-weight: 400;
+    line-height: 1.25;
+    margin: 40px 0 20px;
+  }
+  & h2 {
+    font-size: 28px;
+    letter-spacing: -1px;
+  }
+  & h3 {
+    font-size: 22px;
+    letter-spacing: -0.5px;
+  }
+  & h4 {
+    font-size: 18px;
+  }
+
+  & blockquote {
+    margin: 30px 0;
+    padding-left: 20px;
+    border-left: 4px solid var(--lightgray);
+    color: var(--gray);
+  }
+
+  // 代码：淡紫底、细边框，老 Jekyll 的样子
+  & code {
+    font-size: 14px;
+    padding: 1px 5px;
+    border: 1px solid var(--code-border);
+    border-radius: 3px;
+    background-color: var(--code-bg);
+  }
+
+  & pre {
+    border: 1px solid var(--code-border);
+    border-radius: 3px;
+    background-color: var(--code-bg);
+    & > code,
+    & > code[data-theme] {
+      border: 0;
+      padding: 8px 12px;
+      background: none;
+    }
+  }
+
+  & img {
+    border-radius: 0;
   }
 }
 
-.page-header a,
-.post-list a,
-footer a,
-.backlinks a,
-.toc a {
-  text-decoration: none;
+hr {
+  border: none;
+  border-top: 1px solid var(--lightgray);
+  background: none;
+  height: 0;
 }
 
+// ---- 页脚：一条细线，下面左对齐的小灰字 ----
 footer {
-  text-align: center;
-  opacity: 0.7;
-  font-size: 0.8rem;
+  margin-top: 30px;
+  padding: 30px 0;
+  border-top: 1px solid var(--lightgray);
+  text-align: left;
+  opacity: 1;
+  font-size: 15px;
+  color: var(--gray);
+  & p {
+    margin: 0 0 0.3rem;
+  }
   & ul {
-    justify-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    gap: 1rem;
+  }
+  & a,
+  & a:visited {
+    color: var(--gray);
   }
 }
 
@@ -296,6 +367,8 @@ footer {
 //   右上角很淡的冷光，底部一层灰绿的雾，从顶上更深的夜色过渡到页面底色。
 // 都用 fixed 钉在窗口上；顶栏用同一组背景，看到的正好是它背后那块天，接缝不会断开。
 :root[saved-theme="dark"] {
+  --code-bg: rgba(166, 182, 207, 0.06);
+  --code-border: var(--lightgray);
   --sky-top: #10141d;
   --glow: rgba(150, 170, 205, 0.07);
   --mist: rgba(70, 95, 90, 0.14);

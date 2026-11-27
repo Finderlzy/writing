@@ -16,20 +16,20 @@ configuration:
     fontOrigin: local
     cdnCaching: true
     typography:
-      header: Noto Serif SC
-      body: Noto Serif SC
+      header: Noto Sans SC
+      body: Noto Sans SC
       code: IBM Plex Mono
     colors:
-      # 日间：Quartz 官方文档站（quartz.jzhao.xyz）的默认配色
+      # 日间：仿 karpathy.github.io（Jekyll 早期 minima 主题）——纯白底、近黑字、老式蓝链接
       lightMode:
-        light: "#faf8f8"
-        lightgray: "#e5e5e5"
-        gray: "#727272"
-        darkgray: "#4e4e4e"
-        dark: "#2b2b2b"
-        secondary: "#284b63"
-        tertiary: "#587971"
-        highlight: rgba(143, 159, 169, 0.15)
+        light: "#ffffff"
+        lightgray: "#e8e8e8"
+        gray: "#818181"
+        darkgray: "#333333"
+        dark: "#111111"
+        secondary: "#2a7ae2"
+        tertiary: "#205caa"
+        highlight: rgba(42, 122, 226, 0.06)
         textHighlight: "#fff23688"
       # 冬夜：深藏青的夜空，正文是路灯下雪地那种偏暖的米白，强调色都是冷的灰蓝。
       # 夜空的渐变、天光和雾在 custom.scss 的“冬夜”一节。
