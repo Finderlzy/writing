@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      blogger_files:
+        description: "手动发到 Blogger 的文章，相对 content/，空格分隔（如 blogs/awakening-in-yifu-506.md）；留空则不发"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -78,7 +83,7 @@ jobs:
   # 部署成功后，把这次新增的文章以「摘要 + 原文链接」发到 Blogger
   blogger:
     needs: deploy
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || inputs.blogger_files != ''
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -98,7 +103,11 @@ jobs:
           BLOGGER_POST_EMAIL: ${{ secrets.BLOGGER_POST_EMAIL }}
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-        run: >-
-          python3 scripts/post_to_blogger.py
-          --base "${{ github.event.before }}"
-          --head "${{ github.sha }}"
+          BEFORE: ${{ github.event.before }}
+          FILES: ${{ inputs.blogger_files }}
+        run: |
+          if [ -n "$FILES" ]; then
+            python3 scripts/post_to_blogger.py --files "$FILES"
+          else
+            python3 scripts/post_to_blogger.py --base "$BEFORE" --head "$GITHUB_SHA"
+          fi

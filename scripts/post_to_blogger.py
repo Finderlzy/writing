@@ -6,6 +6,7 @@
 
 用法：
   python3 scripts/post_to_blogger.py --base <旧提交> --head <新提交> [--dry-run]
+  python3 scripts/post_to_blogger.py --files "blogs/a.md blogs/b.md" [--dry-run]  # 手动补发
 
 需要的环境变量（--dry-run 时不需要）：
   BLOGGER_POST_EMAIL  Blogger 投稿地址（用户名.暗号@blogger.com）
@@ -28,8 +29,8 @@ from urllib.parse import quote
 SITE_URL = "https://finderlzy.github.io"
 CONTENT_DIR = "content"
 INDEX_PATH = "public/static/contentIndex.json"
-# 只同步中文文章；英文版在 content/en/ 下，Blogger 那边不重复发
-SKIP_PREFIXES = ("en/",)
+# 只同步中文博客；笔记（notes/）和英文版（en/）不发
+SYNC_PREFIXES = ("blogs/",)
 EXCERPT_CHARS = 200
 
 
@@ -68,7 +69,7 @@ def git_added_files(base: str, head: str) -> list[str]:
                 old_permalinks.add(pl)
         elif status == "A":
             rel = path.removeprefix(f"{CONTENT_DIR}/")
-            if Path(rel).name != "index.md" and not rel.startswith(SKIP_PREFIXES):
+            if Path(rel).name != "index.md" and rel.startswith(SYNC_PREFIXES):
                 added.append(rel)
 
     files = []
@@ -130,12 +131,18 @@ def send(title: str, body_html: str) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--base", required=True)
-    ap.add_argument("--head", required=True)
+    ap.add_argument("--base")
+    ap.add_argument("--head")
+    ap.add_argument("--files", help="手动指定要发的文章（相对 content/，空格分隔），不看 git 历史")
     ap.add_argument("--dry-run", action="store_true", help="只打印，不发邮件")
     args = ap.parse_args()
 
-    added = git_added_files(args.base, args.head)
+    if args.files:
+        added = args.files.split()
+    elif args.head:
+        added = git_added_files(args.base or "", args.head)
+    else:
+        ap.error("需要 --files，或 --base 和 --head")
     if not added:
         print("没有新文章。")
         return 0
