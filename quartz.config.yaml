@@ -1,43 +1,43 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
-  pageTitle: Quartz 5
+  pageTitle: finderlzy
   pageTitleSuffix: ""
   enableSPA: true
   enablePopovers: true
   analytics:
     provider: plausible
-  locale: en-US
+  locale: zh-CN
   baseUrl: finderlzy.github.io
   ignorePatterns:
     - private
     - templates
     - .obsidian
   theme:
-    fontOrigin: googleFonts
+    fontOrigin: local
     cdnCaching: true
     typography:
-      header: Schibsted Grotesk
-      body: Source Sans Pro
+      header: Noto Sans SC
+      body: Noto Sans SC
       code: IBM Plex Mono
     colors:
       lightMode:
-        light: "#faf8f8"
-        lightgray: "#e5e5e5"
-        gray: "#727272"
-        darkgray: "#4e4e4e"
-        dark: "#2b2b2b"
-        secondary: "#284b63"
-        tertiary: "#587971"
+        light: "#fdfdfb"
+        lightgray: "#e8e6e1"
+        gray: "#8a8780"
+        darkgray: "#3a3a38"
+        dark: "#1f1f1e"
+        secondary: "#2c5a8c"
+        tertiary: "#6b8aa8"
         highlight: rgba(143, 159, 169, 0.15)
         textHighlight: "#fff23688"
       darkMode:
-        light: "#161618"
-        lightgray: "#393639"
-        gray: "#7f7f7f"
-        darkgray: "#d4d4d4"
-        dark: "#ebebec"
-        secondary: "#7b97aa"
-        tertiary: "#84a59d"
+        light: "#1a1a19"
+        lightgray: "#353431"
+        gray: "#8d8a83"
+        darkgray: "#d6d3cc"
+        dark: "#eceae4"
+        secondary: "#8fb1d6"
+        tertiary: "#6b8aa8"
         highlight: rgba(143, 159, 169, 0.15)
         textHighlight: "#b3aa0288"
   links:
@@ -49,7 +49,7 @@ plugins:
   - source: "@quartz-community/created-modified-date"
     enabled: true
     options:
-      defaultDateType: modified
+      defaultDateType: created
       priority:
         - frontmatter
         - git
@@ -127,27 +127,23 @@ plugins:
   - source: "@quartz-community/content-page"
     enabled: true
   - source: "@quartz-community/folder-page"
-    enabled: true
+    enabled: false
   - source: "@quartz-community/tag-page"
     enabled: true
   - source: "@quartz-community/explorer"
-    enabled: true
-    layout:
-      position: left
-      priority: 50
+    enabled: false
   - source: "@quartz-community/graph"
     enabled: true
     layout:
       position: right
       priority: 10
+      condition: not-index
   - source: "@quartz-community/search"
     enabled: true
     layout:
-      position: left
+      position: header
       priority: 20
       group: toolbar
-      groupOptions:
-        grow: true
   - source: "@quartz-community/backlinks"
     enabled: true
     layout:
@@ -158,114 +154,81 @@ plugins:
     layout:
       position: beforeBody
       priority: 10
+      condition: not-index
   - source: "@quartz-community/content-meta"
     enabled: true
+    options:
+      showReadingTime: false
     layout:
       position: beforeBody
       priority: 20
+      condition: not-index
   - source: "@quartz-community/tag-list"
-    enabled: false
+    enabled: true
     layout:
       position: beforeBody
       priority: 30
+      condition: has-tags
   - source: "@quartz-community/page-title"
     enabled: true
     layout:
-      position: left
+      position: header
       priority: 10
   - source: "@quartz-community/darkmode"
     enabled: true
     layout:
-      position: left
+      position: header
       priority: 30
       group: toolbar
   - source: "@quartz-community/reader-mode"
-    enabled: true
-    layout:
-      position: left
-      priority: 35
-      group: toolbar
+    enabled: false
   - source: "@quartz-community/breadcrumbs"
-    enabled: true
-    layout:
-      position: beforeBody
-      priority: 5
-      condition: not-index
+    enabled: false
   - source: "@quartz-community/comments"
     enabled: true
     options:
       provider: giscus
       options:
-        {
-          repo: TODO:username/repo-name,
-          repoId: TODO:your-repo-id,
-          category: Announcements,
-          categoryId: TODO:your-category-id,
-          mapping: url,
-          strict: true,
-          reactionsEnabled: true,
-          inputPosition: bottom,
-          lightTheme: light,
-          darkTheme: dark,
-          lang: en
-        }
+        repo: finderlzy/finderlzy.github.io
+        repoId: R_kgDOT9EtHA
+        category: Comments
+        categoryId: DIC_kwDOT9EtHM4DHOm0
+        mapping: pathname
+        strict: true
+        reactionsEnabled: true
+        inputPosition: top
+        lightTheme: light
+        darkTheme: dark
+        lang: zh-CN
     layout:
       position: afterBody
-      priority: 10
+      priority: 40
+      condition: not-index
   - source: "@quartz-community/footer"
     enabled: true
     options:
       links:
-        GitHub: https://github.com/jackyzha0/quartz
-        Discord Community: https://discord.gg/cRFFHYye7t
+        GitHub: https://github.com/finderlzy
+        RSS: /index.xml
     layout:
       position: footer
       priority: 50
   - source: "@quartz-community/recent-notes"
-    enabled: true
-    options:
-      title: Recent Notes
-      limit: 5
-      linkToMore: false
-      showTags: true
-      hideTagPages: true
-      hideFolderPages: true
-    layout:
-      position: left
-      priority: 25
+    enabled: false
   - source: "@quartz-community/spacer"
-    enabled: true
-    options: {}
-    order: 25
-    layout:
-      position: left
-      priority: 25
-      display: mobile-only
+    enabled: false
   - source: "@quartz-community/bases-page"
     enabled: true
     options: {}
     order: 50
   - source: "@quartz-community/note-properties"
-    enabled: true
-    options:
-      includeAll: false
-      includedProperties:
-        - description
-        - tags
-        - aliases
-      excludedProperties: []
-      hidePropertiesView: false
-    order: 5
-    layout:
-      position: beforeBody
-      priority: 15
-      display: all
+    enabled: false
 layout:
   groups:
     toolbar:
       priority: 35
       direction: row
-      gap: 0.5rem
+      gap: 0.25rem
   byPageType:
     "404":
       positions:
@@ -273,15 +236,7 @@ layout:
         left: []
         right: []
     content: {}
-    folder:
-      exclude:
-        - reader-mode
-      positions:
-        right: []
     tag:
-      exclude:
-        - reader-mode
-      positions:
-        right: []
+      template: full-width
     canvas: {}
     bases: {}

@@ -1,3 +1,283 @@
+@use "sass:map";
 @use "./variables.scss" as *;
 
-// put your custom CSS here!
+// ---- 标签页用单栏（full-width frame）；文章页和首页保持 Quartz 默认三栏 ----
+$column: 720px;
+
+.page[data-frame="full-width"] > #quartz-body {
+  max-width: calc(#{$column} + 2rem);
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  & .center.full-width {
+    margin: 0;
+  }
+
+  // 单栏页的正文列居中，顶栏站名跟着它对齐（选择器更具体，盖过下面顶栏的默认算法）
+  & .page-header header {
+    padding-inline: max(1rem, calc((100vw - #{$column}) / 2 - 1rem));
+  }
+}
+
+// ---- 字体：用系统自带的中文字体，不下载网络字体 ----
+// 系统字体有针对屏幕的微调，最清楚；国内也打不开 Google Fonts。
+// config 里 typography 的名字只给 OG 分享图用（fontOrigin: local 时浏览器不加载它）。
+$sans:
+  -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+  "Noto Sans CJK SC", "Source Han Sans SC", "WenQuanYi Micro Hei", system-ui, sans-serif;
+
+:root:root {
+  --titleFont: #{$sans};
+  --headerFont: #{$sans};
+  --bodyFont: #{$sans};
+}
+
+body {
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+article {
+  color: var(--dark);
+}
+
+article p,
+article li {
+  text-align: justify;
+}
+
+// ---- 顶栏：固定在窗口最上方、横跨整个窗口；左边站名，右边搜索和夜间模式 ----
+$barHeight: 3.5rem;
+$pageMax: calc(#{map.get($breakpoints, desktop)} + 300px); // 同 base.scss 里 .page 的 max-width
+$colGap: 5px; // 同 variables.scss 里栅格的 columnGap
+
+.page-header header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  // 宽度用 100vw 而不是 left/right: 0：base.scss 给 html 设了 width: 100vw（含滚动条），
+  // 页面在 100vw 里居中。顶栏用同一个基准，左右内边距才能和正文两边对上（右边多出的部分藏在滚动条下面）。
+  width: 100vw;
+  z-index: 100;
+  height: $barHeight;
+  box-sizing: border-box;
+  margin: 0;
+  // 站名对齐正文左边缘，图标对齐正文右边缘。按 base.scss 的三种栅格算正文那一列：
+  //   桌面：两边各是 页面居中留白 + 侧栏 320px + 列间距 5px
+  //   平板：左边 #quartz-body 内边距 1rem + 左侧栏 + 列间距；右栏排到正文下面，右边只有 1rem
+  //   手机：两边都只有 1rem 内边距
+  padding-inline: calc(max(0px, (100vw - #{$pageMax}) / 2) + #{$sidePanelWidth} + #{$colGap});
+  @media all and ($tablet) {
+    padding-left: calc(1rem + #{$sidePanelWidth} + #{$colGap});
+    padding-right: 1rem;
+  }
+  @media all and ($mobile) {
+    padding-inline: 1rem;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  // 不能用 backdrop-filter 毛玻璃：它会让顶栏成为 fixed 子元素的定位容器，
+  // 搜索弹窗（fixed 全屏、就在顶栏里面）会被关进顶栏这一条里。
+  background: var(--light);
+  border-bottom: 1px solid var(--lightgray);
+
+  & h2.page-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  & .page-title a {
+    color: var(--dark);
+  }
+
+  // 右边两个按钮：同样 32×32，图标居中，这样才对得齐
+  // 按钮 32px、图标 18px，图标离按钮右边有 7px 空白；整组往右挪 7px，让看得见的图标贴齐正文右边缘
+  & .flex-component {
+    align-items: center;
+    margin-right: calc((18px - 2rem) / 2);
+  }
+
+  & .flex-component > div {
+    display: flex;
+    align-items: center;
+  }
+
+  & .search {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+
+  & .search > .search-button,
+  & button.darkmode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--highlight);
+    }
+
+    // darkmode 插件把图标写成 absolute + top: 6px，这里改回正常流，让 flex 居中
+    & > svg {
+      position: static;
+      width: 18px;
+      height: 18px;
+      margin: 0;
+    }
+  }
+
+  // 搜索只留一个图标，不要一整条输入框
+  & .search > .search-button > p {
+    display: none;
+  }
+}
+
+// 顶栏是 fixed 的，下面的东西要让出它的高度
+#quartz-body .page-header {
+  margin-top: calc(#{$barHeight} + 2rem);
+}
+
+// 侧栏只在它是“粘在屏幕上的一整列”时才需要让位，断点跟 base.scss 一致：
+// 左栏在手机上变成横排，右栏在非桌面宽度变成正文下方的一行，那时不能给它们定高。
+@media all and not ($mobile) {
+  #quartz-body .sidebar.left {
+    top: $barHeight;
+    height: calc(100vh - #{$barHeight});
+    padding-top: 2rem;
+  }
+}
+
+@media all and ($desktop) {
+  #quartz-body .sidebar.right {
+    top: $barHeight;
+    height: calc(100vh - #{$barHeight});
+    padding-top: 2rem;
+  }
+}
+
+// ---- 首页文章列表 ----
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+
+  & > .post {
+    margin: 0 0 2.2rem;
+  }
+
+  & .post-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--dark);
+    background: none;
+    padding: 0;
+    &:hover {
+      color: var(--secondary);
+    }
+  }
+
+  & .post-meta {
+    margin-top: 0.15rem;
+    font-size: 0.85rem;
+    color: var(--gray);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.7rem;
+  }
+
+  & .post-tag {
+    color: var(--gray);
+    background: none;
+    padding: 0;
+    font-weight: normal;
+    &:hover {
+      color: var(--secondary);
+    }
+  }
+
+  & .post-desc {
+    margin: 0.4rem 0 0;
+    color: var(--darkgray);
+    text-align: justify;
+  }
+}
+
+// 首页正文为空，去掉正文和页脚之间那条分割线
+body[data-slug="index"] .center > hr {
+  display: none;
+}
+
+// ---- 文章页：标题、日期、标签都收得小一点 ----
+.page-header .popover-hint {
+  & .article-title {
+    margin: 1.5rem 0 0.25rem;
+    font-size: 2rem;
+    line-height: 1.35;
+  }
+
+  & .content-meta {
+    margin: 0;
+    color: var(--gray);
+    font-size: 0.85rem;
+  }
+
+  // 标签：一行小灰字，不要胶囊
+  & .tags {
+    margin: 0.3rem 0 1rem;
+    gap: 0 0.7rem;
+    & .tag-link {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.8rem;
+      color: var(--gray);
+      &:hover {
+        color: var(--secondary);
+      }
+    }
+  }
+}
+
+// 链接：不要背景色块，用细下划线
+a.internal,
+a.external {
+  background-color: transparent;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--secondary) 35%, transparent);
+  text-underline-offset: 0.2em;
+  &:hover {
+    text-decoration-color: var(--secondary);
+  }
+}
+
+.page-header a,
+.post-list a,
+footer a,
+.backlinks a,
+.toc a {
+  text-decoration: none;
+}
+
+footer {
+  text-align: center;
+  opacity: 0.7;
+  font-size: 0.8rem;
+  & ul {
+    justify-content: center;
+  }
+}
