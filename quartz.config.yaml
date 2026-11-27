@@ -20,26 +20,29 @@ configuration:
       body: Noto Sans SC
       code: IBM Plex Mono
     colors:
+      # 日间：Quartz 官方文档站（quartz.jzhao.xyz）的默认配色
       lightMode:
-        light: "#fdfdfb"
-        lightgray: "#e8e6e1"
-        gray: "#8a8780"
-        darkgray: "#3a3a38"
-        dark: "#1f1f1e"
-        secondary: "#2c5a8c"
-        tertiary: "#6b8aa8"
+        light: "#faf8f8"
+        lightgray: "#e5e5e5"
+        gray: "#727272"
+        darkgray: "#4e4e4e"
+        dark: "#2b2b2b"
+        secondary: "#284b63"
+        tertiary: "#587971"
         highlight: rgba(143, 159, 169, 0.15)
         textHighlight: "#fff23688"
+      # 冬夜：深藏青的夜空，正文是路灯下雪地那种偏暖的米白，强调色都是冷的灰蓝。
+      # 夜空的渐变、天光和雾在 custom.scss 的“冬夜”一节。
       darkMode:
-        light: "#1a1a19"
-        lightgray: "#353431"
-        gray: "#8d8a83"
-        darkgray: "#d6d3cc"
-        dark: "#eceae4"
-        secondary: "#8fb1d6"
-        tertiary: "#6b8aa8"
-        highlight: rgba(143, 159, 169, 0.15)
-        textHighlight: "#b3aa0288"
+        light: "#161b26"
+        lightgray: "#2a3141"
+        gray: "#7d8697"
+        darkgray: "#d6d1c7"
+        dark: "#ebe6dc"
+        secondary: "#a6b6cf"
+        tertiary: "#7489a6"
+        highlight: rgba(166, 182, 207, 0.08)
+        textHighlight: rgba(166, 182, 207, 0.25)
   links:
     markdownLinkResolution: absolute
   contentIndex:

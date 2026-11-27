@@ -281,3 +281,22 @@ footer {
     justify-content: center;
   }
 }
+
+// ---- 冬夜：只作用于夜间模式，日间保持原样 ----
+// 调色板在 quartz.config.yaml 的 darkMode。这里叠三层天空，都淡到第一眼注意不到：
+//   右上角很淡的冷光，底部一层灰绿的雾，从顶上更深的夜色过渡到页面底色。
+// 都用 fixed 钉在窗口上；顶栏用同一组背景，看到的正好是它背后那块天，接缝不会断开。
+:root[saved-theme="dark"] {
+  --sky-top: #10141d;
+  --glow: rgba(150, 170, 205, 0.07);
+  --mist: rgba(70, 95, 90, 0.14);
+
+  & body,
+  & .page-header header {
+    background:
+      radial-gradient(ellipse 70vw 55vh at 82% 6%, var(--glow), transparent 70%) fixed,
+      linear-gradient(to top, var(--mist), transparent 38vh) fixed,
+      linear-gradient(to bottom, var(--sky-top), var(--light) 75vh) fixed,
+      var(--light);
+  }
+}
