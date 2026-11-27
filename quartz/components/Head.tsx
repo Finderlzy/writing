@@ -110,6 +110,8 @@ export default (() => {
         <link rel="icon" href={iconPath} />
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
+        {/* Google Search Console 站点所有权验证 */}
+        <meta name="google-site-verification" content="ZaspVWmHtUhuHTOw16yl43FhyLr_hkydKn5SF_kAVgk" />
 
         {css.map((resource) => CSSResourceToStyleElement(resource, true))}
         {js
