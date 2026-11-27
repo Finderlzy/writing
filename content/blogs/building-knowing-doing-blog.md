@@ -1,6 +1,6 @@
 ---
 title: "回顾「知行录」的搭建过程"
-permalink: "building-zhixinglu-blog"
+permalink: "building-knowing-doing-blog"
 description: "记录作者搭建个人博客「知行录」的过程：用 Obsidian 写作、自写 Inbox Filer 插件整理并发布到 Quartz 博客仓库，经 GitHub Actions 部署到 GitHub Pages 并同步 Blogger，兼顾私密…"
 created: 2026-11-27
 tags:
