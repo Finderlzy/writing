@@ -58,9 +58,14 @@ article {
   color: var(--dark);
 }
 
-article p,
-article li {
-  text-align: justify;
+// 两端对齐只在宽屏用：手机上一行只有十几个字，遇到英文单词、链接这类不能断开的长串，
+// 剩下的字会被硬撑开，字距忽宽忽窄。
+@media all and not ($mobile) {
+  article p,
+  article li,
+  .post-list .post-desc {
+    text-align: justify;
+  }
 }
 
 // ---- 顶栏：横跨整个窗口，上面一条 5px 粗线、下面一条细线；不固定，随页面滚走 ----
@@ -232,7 +237,6 @@ a.external {
   & .post-desc {
     margin: 0.3rem 0 0;
     color: var(--darkgray);
-    text-align: justify;
   }
 }
 
