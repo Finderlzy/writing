@@ -89,34 +89,10 @@ plugins:
     options:
       renderEngine: katex
     order: 80
-  - source: "@quartz-community/citations"
-    enabled: false
-    order: 85
-  - source: "@quartz-community/ox-hugo"
-    enabled: false
-    order: 91
-  - source: "@quartz-community/roam"
-    enabled: false
-    order: 92
-  - source: "@quartz-themes/core"
-    enabled: false
-    options:
-      theme: tokyo-night
-      mode: both
-  - source: "@quartz-community/explicit-publish"
-    enabled: false
   - source: "@quartz-community/unlisted-pages"
     enabled: true
     options: {}
     order: 45
-  - source: "@quartz-community/encrypted-pages"
-    enabled: false
-  - source: "@quartz-community/stacked-pages"
-    enabled: false
-    layout:
-      position: afterBody
-      priority: 50
-      display: all
   - source: "@quartz-community/alias-redirects"
     enabled: true
   - source: "@quartz-community/favicon"
@@ -125,16 +101,10 @@ plugins:
     enabled: true
   - source: "@quartz-community/cname"
     enabled: true
-  - source: "@quartz-community/canvas-page"
-    enabled: true
   - source: "@quartz-community/content-page"
     enabled: true
-  - source: "@quartz-community/folder-page"
-    enabled: false
   - source: "@quartz-community/tag-page"
     enabled: true
-  - source: "@quartz-community/explorer"
-    enabled: false
   - source: "@quartz-community/graph"
     enabled: true
     layout:
@@ -183,10 +153,6 @@ plugins:
       position: header
       priority: 30
       group: toolbar
-  - source: "@quartz-community/reader-mode"
-    enabled: false
-  - source: "@quartz-community/breadcrumbs"
-    enabled: false
   - source: "@quartz-community/comments"
     enabled: true
     options:
@@ -216,16 +182,6 @@ plugins:
     layout:
       position: footer
       priority: 50
-  - source: "@quartz-community/recent-notes"
-    enabled: false
-  - source: "@quartz-community/spacer"
-    enabled: false
-  - source: "@quartz-community/bases-page"
-    enabled: true
-    options: {}
-    order: 50
-  - source: "@quartz-community/note-properties"
-    enabled: false
 layout:
   groups:
     toolbar:
@@ -241,5 +197,3 @@ layout:
     content: {}
     tag:
       template: full-width
-    canvas: {}
-    bases: {}
