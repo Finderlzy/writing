@@ -1,7 +1,7 @@
 ---
-title: "Building My Blog 'Zhixinglu': A Behind-the-Scenes Look"
+title: "Building My Blog 'Knowing & Doing': A Behind-the-Scenes Look"
 permalink: "en/building-zhixinglu-blog"
-description: "A walkthrough of how I built my personal blog 'Zhixinglu': writing in Obsidian, using a custom Inbox Filer plugin to organize and publish posts to a Quartz repo, deploying via GitHub Actions to GitHub Pages and syncing to Blogger, while keeping some content private."
+description: "A walkthrough of how I built my personal blog 'Knowing & Doing': writing in Obsidian, using a custom Inbox Filer plugin to organize and publish posts to a Quartz repo, deploying via GitHub Actions to GitHub Pages and syncing to Blogger, while keeping some content private."
 created: 2026-11-27
 tags:
   - "blog"
