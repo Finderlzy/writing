@@ -36,3 +36,44 @@
 └─ 插件右键发布 → 整理、翻译、改写链接（见上文）
      → finderlzy.github.io 的 main 分支 → GitHub Actions 自动构建 → 博客网站
 ```
+
+---
+
+# Knowing & Doing (English)
+
+Blog: <https://finderlzy.github.io>, built on [jackyzha0/quartz](https://github.com/jackyzha0/quartz) v5.
+
+## Why I rebuilt it
+
+Influenced by Liu Weipeng, I came to believe a blog post should be something new that emerges once many thoughts have been worked through and connected. My previous blog held too many scattered thoughts, so I rebuilt it once again. The old theme looked nice, but I prefer something plainer, so I took the chance to switch themes as well.
+
+## Needs and approach
+
+This blog is built on Quartz plus an Obsidian plugin I wrote myself.
+
+My core needs:
+
+- **Lightweight**: publish with one click in Obsidian, without writing frontmatter by hand.
+- **Sharing**: one place where I can easily show my writing to others.
+- **Sync across devices**: read all my notes on my phone too.
+- **Partly private, partly public**: private content must not be findable in the repository's source.
+
+There are already plenty of blog frameworks and static site generators, so I didn't reinvent the wheel (I did want to build my own framework at first, but gave up once I saw how many already exist) and picked Quartz. Why Quartz? It shows a graph of how each post connects to others, which I really like, so I went with it over Hexo, WordPress or the rest.
+
+I write everything in Obsidian and wanted to publish straight from there, but Quartz doesn't offer that, so I wrote a small plugin, Inbox Filer, and built in a few features I like to use. Honestly, an Obsidian plugin can do a lot: most of this blog's needs are handled by the plugin, while Quartz only builds the site and the graph, plus a few small customizations (hiding notes, switching between Chinese and English).
+
+## Plugin
+
+- **Tidy**: uses a model to fill in properties, add tags, write a summary and pick an English URL, and also converts math to LaTeX and normalizes quotation marks.
+- **Publish**: right-click a post to copy it, along with the notes and attachments it links to, into this repository, translate an English version, then commit and push.
+
+## Architecture
+
+```text
+Local Obsidian (the only place I edit)
+├─ Obsidian Git auto-push → private repository
+│    ├─ Obsidian on iPhone pulls → for me to read now
+│    └─ daily backup to Google Drive → kept for future models
+└─ Plugin right-click publish → tidy, translate, rewrite links (see above)
+     → main branch of finderlzy.github.io → GitHub Actions build → blog site
+```
