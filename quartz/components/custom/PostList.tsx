@@ -1,9 +1,9 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "../types"
 import { QuartzPluginData } from "../../plugins/vfile"
-import { FullSlug, resolveRelative, slugTag } from "../../util/path"
+import { FullSlug, resolveRelative } from "../../util/path"
 import { isLocaleHome, slugPrefix } from "../../util/pageLocale"
 
-// 首页文章列表：标题 + 日期 · 标签 + 摘要（karpathy.github.io 的样子）。
+// 首页文章列表：标题 + 日期 + 摘要（不显示标签，标签留在文章页）（karpathy.github.io 的样子）。
 // 只列正式文章：排除首页、tags/ 生成页、notes/ 里被带进来的笔记。
 export const isPost = (f: QuartzPluginData) =>
   !!f.slug &&
@@ -21,8 +21,6 @@ const fmt = (d: Date) => {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`
 }
 
-const MAX_TAGS = 3
-
 export default (() => {
   const PostList: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) => {
     // 每种语言的首页（index、en/index）只列同一语言的文章
@@ -38,7 +36,6 @@ export default (() => {
       <ul class="post-list">
         {posts.map((f) => {
           const date = created(f)
-          const tags = ((f.frontmatter?.tags as string[] | undefined) ?? []).slice(0, MAX_TAGS)
           const desc = (f.frontmatter?.description as string | undefined) ?? f.description
           return (
             <li class="post">
@@ -47,14 +44,6 @@ export default (() => {
               </a>
               <div class="post-meta">
                 {date && <time datetime={date.toISOString()}>{fmt(date)}</time>}
-                {tags.map((t) => (
-                  <a
-                    class="post-tag internal"
-                    href={resolveRelative(here, `tags/${slugTag(t)}` as FullSlug)}
-                  >
-                    #{t}
-                  </a>
-                ))}
               </div>
               {desc && <p class="post-desc">{desc}</p>}
             </li>
