@@ -165,6 +165,9 @@ async function _navigate(url: URL, isBack: boolean = false) {
 
   document.querySelector(".navigation-progress")?.remove()
   micromorph(document.body, html.body)
+  // 中英文页面之间跳转时，<html lang/dir> 也要跟着换
+  document.documentElement.lang = html.documentElement.lang
+  document.documentElement.dir = html.documentElement.dir
 
   // scroll into place and add history
   if (isBack) {

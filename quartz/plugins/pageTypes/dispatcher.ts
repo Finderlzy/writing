@@ -7,6 +7,7 @@ import {
 import { QuartzComponent, QuartzComponentProps } from "../../components/types"
 import { pageResources, renderPage } from "../../components/renderPage"
 import { FullPageLayout } from "../../cfg"
+import { localizedPageTitle, pageLocale } from "../../util/pageLocale"
 import {
   FilePath,
   FullSlug,
@@ -121,7 +122,13 @@ async function emitPage(
   resources: StaticResources,
   treeTransforms?: PageTreeTransforms,
 ) {
-  const cfg = ctx.cfg.configuration
+  // 按页切换界面语言：组件都从 props.cfg.locale 取翻译，所以在这里按页覆盖即可。
+  // 站名也一样：非默认语言的页面用该语言首页（如 en/index.md）的 title。
+  const cfg = {
+    ...ctx.cfg.configuration,
+    locale: pageLocale(ctx.cfg.configuration.locale, fileData),
+    pageTitle: localizedPageTitle(ctx.cfg.configuration.pageTitle, fileData, allFiles),
+  }
   // For the 404 page, use an absolute base path so assets resolve correctly
   // when the hosting provider serves 404.html from any URL depth.
   // During local dev (--serve), the dev server strips baseDir itself and
