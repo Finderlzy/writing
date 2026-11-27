@@ -58,15 +58,19 @@ article {
   color: var(--dark);
 }
 
-// 两端对齐只在宽屏用：手机上一行只有十几个字，遇到英文单词、链接这类不能断开的长串，
-// 剩下的字会被硬撑开，字距忽宽忽窄。
-@media all and not ($mobile) {
-  article p,
-  article li,
-  .post-list .post-desc {
-    text-align: justify;
-  }
+// 两端对齐，右边收齐。
+// base.scss 给段落设了 text-wrap: pretty：浏览器为了不让最后一行太短，会提前把几个字挤到下一行，
+// 两端对齐再把上一行剩下的空当摊进字距，手机上就出现个别行字距特别宽。这里关掉它。
+// 英文页（lang="en"）允许断词加连字符，网址这类长串允许任意处折行。
+article p,
+article li,
+.post-list .post-desc {
+  text-align: justify;
+  text-wrap-style: auto;
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
+
 
 // ---- 顶栏：横跨整个窗口，上面一条 5px 粗线、下面一条细线；不固定，随页面滚走 ----
 // 用 absolute 而不是 fixed：它的祖先都没有定位，所以相对整页定位，滚动时跟着走。
