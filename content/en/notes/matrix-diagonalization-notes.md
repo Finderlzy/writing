@@ -1,7 +1,7 @@
 ---
 title: "Simplifying Matrices with Eigenvalues and Eigenvectors"
 permalink: "en/matrix-diagonalization-notes"
-description: "Starting from the definitions of eigenvalues and eigenvectors, this post explains how to use eigenvectors as a basis to…"
+description: "Starting from the definitions of eigenvalues and eigenvectors, this explains how to diagonalize a matrix using eigenvectors as a basis, thereby simplifying matrix powers, and outlines the steps for computing eigenvalues and eigenvectors and determining diagonalizability."
 created: 2026-11-17
 tags:
   - "linear-algebra"
@@ -10,29 +10,29 @@ tags:
   - "matrix-diagonalization"
   - "learning"
 ---
-## Problem
+## The Problem
 ---
-The problem we want to solve today is: **how do we simplify a matrix**?
+Today's problem is: **how do we simplify a matrix**?
 
 
-## Eigenvectors and eigenvalues
+## Eigenvectors and Eigenvalues
 ---
-As we know, a matrix can be understood as a kind of linear transformation. In some linear transformations, we can find that some vectors, after the transformation, still lie in their original direction—they have merely been stretched. Such vectors are **eigenvectors**, and the factor by which they are stretched after the transformation is the **eigenvalue**.
+As we know, a matrix can be understood as a linear transformation. In some linear transformations, we can find that some vectors, after the transformation, still point in their original direction—they have simply been stretched. Such vectors are **eigenvectors**, and the factor by which they are stretched after the transformation is the **eigenvalue**.
 
 
-## How eigenvectors simplify the "initial matrix"
+## How Eigenvectors Simplify the "Initial Matrix"
 ---
-If, for a two-by-two matrix, we can find two **non-collinear (that is, linearly independent)** eigenvectors, we can use these two eigenvectors as basis vectors, thereby achieving the goal of simplifying the matrix. Likewise, if a three-by-three matrix has three linearly independent eigenvectors, we can use these three vectors as basis vectors.
+If a 2×2 matrix has two **non-collinear (that is, linearly independent)** eigenvectors, we can use these two eigenvectors as basis vectors, thereby simplifying the matrix. Likewise, a 3×3 matrix that has three linearly independent eigenvectors can use these three vectors as basis vectors.
 
-Why does using eigenvectors as basis vectors simplify the matrix? Define the original matrix as the "initial matrix." The "initial matrix" can then be viewed as first using a matrix (call it the "transition matrix") to convert to a coordinate system whose basis is the eigenvectors; then using a matrix to stretch, so this matrix will be a **diagonal matrix**; and finally using the inverse of the first matrix to go back.  ^92d134
+Why can using eigenvectors as basis vectors simplify a matrix? Let the original matrix be called the "initial matrix." The "initial matrix" can be viewed as first using a matrix (call it the "transformation matrix") to convert to a coordinate system whose basis is the eigenvectors; then using a matrix to stretch, so this matrix will be a **diagonal matrix**; and finally using the inverse of the first matrix to transform back.  ^92d134
 
-Written as an equation (note that matrix multiplication is read from right to left, with the rightmost acting on the vector first):
+Written as an equation (note that matrix multiplication is read from right to left—the rightmost matrix acts on the vector first):
 
 $$
 A = \underbrace{P}_{\text{逆向回去}} \;\underbrace{\Lambda}_{\text{伸缩}}\; \underbrace{P^{-1}}_{\text{转换矩阵}}
 $$
 
-At first glance this looks complicated, but just think: if we multiply many, many "initial matrices" together, computing them one by one would take forever. But using the simplified matrix, we find that the "inverse transition matrix" of the first cancels with the "transition matrix" of the second, so what we end up with is:
+At first glance this looks complicated, but just think: if there are many, many "initial matrices" multiplied together, computing them one by one would take forever. But using the simplified matrix, we find that the "inverse transformation matrix" of the first cancels with the "transformation matrix" of the second, so the final result is:
 
 $$
 \begin{aligned}
@@ -58,14 +58,14 @@ $$
 $$
 
 
-## How to compute eigenvectors and simplify a matrix
+## How to Compute Eigenvectors and Simplify a Matrix
 ---
-Once the above is understood, we can move to the next step: how do we compute the eigenvectors of a matrix and simplify the matrix?
+Having understood the above, we can move to the next step: how do we compute the eigenvectors of a matrix and simplify the matrix?
 
 
-### Core principle
+### Core Principle
 
-From the definition of an eigenvector, it is not hard to obtain a core formula: $A \vec{x} = λ \vec{x}$ , where $\vec{x}$ is the eigenvector. Then, after some manipulation:
+From the definition of an eigenvector, we can easily obtain a core formula: $A \vec{x} = λ \vec{x}$ , where $\vec{x}$ is the eigenvector. Then, after some manipulation:
 
 $$
 \begin{aligned}
@@ -76,28 +76,28 @@ $$
 \end{aligned}
 $$
 
-(In the middle, $\lambda\vec{x}$ must be written as $\lambda I\vec{x}$, because "a matrix minus a number" is undefined, while "a matrix minus a matrix" is defined, and $I\vec{x} = \vec{x}$ changes nothing.)
+(In the middle, $\lambda\vec{x}$ must be written as $\lambda I\vec{x}$, because "a matrix minus a number" is undefined, whereas "a matrix minus a matrix" is defined, and $I\vec{x} = \vec{x}$ changes nothing.)
 
 We then obtain the final core formula:
 $$
 [A - λ I] \vec{x} = 0
 $$
-Generally speaking, we do not consider the case where $\vec{x}$ is the zero vector, so to satisfy the above equation there is only one condition: $|A - λI| = 0$ .
+Generally, we do not consider the case where $\vec{x}$ is the zero vector, so to satisfy the above equation there is only one condition: $|A - λI| = 0$ .
 
 
-### Computing eigenvalues
+### Computing Eigenvalues
 
-So the first step is to compute the eigenvalues, that is, to compute the determinant above. After computing them, check them with two properties:
-1. The sum of all eigenvalues = the sum of the main diagonal of matrix A (the trace): $\lambda_1 + \lambda_2 + \cdots + \lambda_n = a_{11} + a_{22} + \cdots + a_{nn} = \operatorname{tr}(A)$
+So the first step is to compute the eigenvalues, that is, to compute the determinant above. After computing them, check with two properties:
+1. The sum of all eigenvalues = the sum of the main diagonal entries of matrix A (the trace): $\lambda_1 + \lambda_2 + \cdots + \lambda_n = a_{11} + a_{22} + \cdots + a_{nn} = \operatorname{tr}(A)$
 2. The product of all eigenvalues = the determinant of matrix A: $\lambda_1 \lambda_2 \cdots \lambda_n = |A|$
 
 
-### Computing eigenvectors
+### Computing Eigenvectors
 
-After computing the eigenvalues, substitute each eigenvalue back into the system of equations $[A - λ I] \vec{x} = 0$ to solve for the eigenvectors. This step is the **computation of homogeneous linear systems** learned earlier, because the right-hand side of the equation is 0.
+After computing the eigenvalues, substitute each eigenvalue back into the system of equations $[A - λ I] \vec{x} = 0$ to solve for the eigenvectors. This step is exactly the **computation of homogeneous linear systems** learned earlier, because the right-hand side of the equation is 0.
 
 
-### Diagonalizing the matrix
+### Diagonalizing the Matrix
 
 If we obtain n linearly independent eigenvectors, we can simplify the matrix A, that is, **diagonalize** A; if we do not obtain n eigenvectors, we cannot simplify it.
 
@@ -124,25 +124,25 @@ $$
 A = P\Lambda P^{-1}
 $$
 
-(Equivalent form: $AP = P\Lambda$, which is just writing the n $A\vec{x}_i = \lambda_i\vec{x}_i$ side by side; multiplying both sides on the right by $P^{-1}$ gives the equation above. $P^{-1}$ exists precisely because these n eigenvectors are linearly independent.)
+(Equivalent form: $AP = P\Lambda$, which is just writing the n $A\vec{x}_i = \lambda_i\vec{x}_i$ side by side; multiplying both sides on the right by $P^{-1}$ gives the above equation. $P^{-1}$ exists precisely because these n eigenvectors are linearly independent.)
 
 
-## A new problem
+## A New Problem
 ---
-At this point there is a small nuisance: to compute eigenvectors, we must compute all the way to the end, and we also need to know what the numbers in each row and column of the matrix are. Mathematicians have provided some methods to deal with these small nuisances.
+At this point there is a small annoyance: to compute the eigenvectors, you have to compute all the way to the end, and you also need to know what the numbers in each row and column of the matrix are. Mathematicians have provided some methods to deal with these small annoyances.
 
 
 ### Dealing with "computing all the way to the end"
 
-The first is to deal with the nuisance of "computing all the way to the end." To determine whether an n-by-n matrix A can be diagonalized—that is, whether we can gather n linearly independent eigenvectors—mathematicians found that after computing the eigenvalues, we can directly decide whether diagonalization is possible just by looking at the multiplicities of the eigenvalues and the number of free variables.
+The first is to deal with the annoyance of "computing all the way to the end." To determine whether an n×n matrix A can be diagonalized—that is, whether we can gather n linearly independent eigenvectors—mathematicians found that after computing the eigenvalues, we can directly decide whether diagonalization is possible just by looking at the multiplicities of the eigenvalues and the number of free variables.
 
-First check whether there are repeated roots: **if there are no repeated roots, it can be diagonalized directly**. If there are repeated roots, then for the repeated roots only, compute the rank of A − λI, and **check whether the number of free variables equals its multiplicity**. If all are equal, it means each eigenvalue provides a full quota of directions, and together they add up to exactly n, so it can be diagonalized; if even one is not equal, it means that repeated root does not provide enough directions, so we cannot gather n, and it cannot be diagonalized. This way we do not need to actually solve for the eigenvectors, saving the tedious step of computing them.
+First check whether there are repeated roots: **if there are no repeated roots, it can be diagonalized directly**. If there are repeated roots, then for the repeated roots only, compute the rank of A − λI, and **check whether the number of free variables equals its multiplicity**. If all are equal, it means each eigenvalue provides a full set of directions, and together they add up to exactly n, so it can be diagonalized; if even one is not equal, it means that repeated root does not provide enough directions, so we cannot gather n, and it cannot be diagonalized. This way we do not need to actually solve for the eigenvectors, saving the tedious step of computing them.
 
-However many free variables there are, that is how many vectors the fundamental solution system has. √
+The number of free variables equals the number of vectors in the fundamental solution system. √
 "So **the number of free variables = how many independent directions this λ can provide**."???
-(I still do not quite understand this part—eigenvalues—providing directions—repeated roots)
+(I still don't quite understand this part—eigenvalues—providing directions—repeated roots)
 
 
 ### Dealing with "also needing to know what the matrix is"
 
-Next comes the trouble of solving "still needing to know what the matrix is." (I didn't learn it clearly—I only know that you substitute matrix A into the characteristic equation, and then the result of this system of equations will definitely be 0. There's also something about $m(x)$ and minimal polynomials and such, which I don't really understand either.
+Next comes the trouble of having to know what a matrix is. (I didn't learn it well—I only know that you substitute matrix A into the characteristic equation, and then the result of this system of equations will definitely be 0. There's also something about $m(x)$, minimal polynomials, and so on, which I don't really understand either.
