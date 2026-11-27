@@ -16,8 +16,8 @@ configuration:
     fontOrigin: local
     cdnCaching: true
     typography:
-      header: Noto Sans SC
-      body: Noto Sans SC
+      header: Noto Serif SC
+      body: Noto Serif SC
       code: IBM Plex Mono
     colors:
       # 日间：Quartz 官方文档站（quartz.jzhao.xyz）的默认配色

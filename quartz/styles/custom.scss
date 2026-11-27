@@ -19,17 +19,20 @@ $column: 720px;
   }
 }
 
-// ---- 字体：用系统自带的中文字体，不下载网络字体 ----
+// ---- 字体：用系统自带的中文宋体（衬线），不下载网络字体 ----
 // 系统字体有针对屏幕的微调，最清楚；国内也打不开 Google Fonts。
+// 西文放最前：英文和数字用西文衬线，中文落到后面的宋体。
+//   Mac：Songti SC（宋体-简）；Linux：思源宋体（Noto Serif CJK SC，需安装）；
+//   Windows 没有好的屏幕宋体，会落到 SimSun。
 // config 里 typography 的名字只给 OG 分享图用（fontOrigin: local 时浏览器不加载它）。
-$sans:
-  -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-  "Noto Sans CJK SC", "Source Han Sans SC", "WenQuanYi Micro Hei", system-ui, sans-serif;
+$serif:
+  "Iowan Old Style", Georgia, "Songti SC", "Noto Serif CJK SC", "Noto Serif SC",
+  "Source Han Serif SC", "Source Han Serif CN", "STSong", serif;
 
 :root:root {
-  --titleFont: #{$sans};
-  --headerFont: #{$sans};
-  --bodyFont: #{$sans};
+  --titleFont: #{$serif};
+  --headerFont: #{$serif};
+  --bodyFont: #{$serif};
 }
 
 body {
