@@ -222,7 +222,8 @@ $colGap: 5px; // 同 variables.scss 里栅格的 columnGap
 }
 
 // 首页正文为空，去掉正文和页脚之间那条分割线
-body[data-slug="index"] .center > hr {
+body[data-slug="index"] .center > hr,
+body[data-slug="en/index"] .center > hr {
   display: none;
 }
 

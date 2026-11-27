@@ -35,3 +35,9 @@ export function pageLocale(fallback: ValidLocale, fileData: QuartzPluginData): V
   const prefix = slugPrefix(fileData.slug)
   return prefix ? LOCALE_PREFIXES[prefix] : fallback
 }
+
+/** 是不是某种语言的首页（index、en/index） */
+export function isLocaleHome(slug: string | undefined): boolean {
+  const prefix = slugPrefix(slug)
+  return slug === (prefix ? `${prefix}/index` : "index")
+}

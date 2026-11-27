@@ -1,7 +1,7 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "../types"
 import { QuartzPluginData } from "../../plugins/vfile"
 import { FullSlug, resolveRelative, slugTag } from "../../util/path"
-import { slugPrefix } from "../../util/pageLocale"
+import { isLocaleHome, slugPrefix } from "../../util/pageLocale"
 
 // 首页文章列表：标题 + 日期 · 标签 + 摘要（karpathy.github.io 的样子）。
 // 只列正式文章：排除首页、tags/ 生成页、notes/ 里被带进来的笔记。
@@ -26,8 +26,8 @@ const MAX_TAGS = 3
 export default (() => {
   const PostList: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) => {
     // 每种语言的首页（index、en/index）只列同一语言的文章
+    if (!isLocaleHome(fileData.slug)) return null
     const prefix = slugPrefix(fileData.slug)
-    if (fileData.slug !== (prefix ? `${prefix}/index` : "index")) return null
 
     const posts = allFiles
       .filter((f) => isPost(f) && slugPrefix(f.slug) === prefix)

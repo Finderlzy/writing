@@ -4,10 +4,16 @@ import LanguageSwitch from "./quartz/components/custom/LanguageSwitch"
 import Flex from "./quartz/components/Flex"
 import { componentRegistry } from "./quartz/components/registry"
 import { QuartzComponent, QuartzComponentConstructor } from "./quartz/components/types"
+import { registerCondition } from "./quartz/plugins/loader/conditions"
+import { isLocaleHome } from "./quartz/util/pageLocale"
 
 // Inbox Filer 发布时，被正式文章链到而带进来的笔记放在 content/notes/（插件设置“带进来的笔记文件夹”）。
 // 它们不进首页文章列表（规则在 PostList 的 isPost 里），但仍能搜索、出现在关系图和反链里，
 // 所以不用 unlisted（它会把这些也藏掉）。改了插件里的文件夹名，要同步改 isPost 里的 "notes"。
+
+// yaml 里的 condition: not-index（站名标题、日期、关系图、评论）内置只认 "index"，
+// 英文首页 en/index 也要算首页。自定义条件优先于内置的同名条件。
+registerCondition("not-index", (props) => !isLocaleHome(props.fileData.slug))
 
 const config = await loadQuartzConfig()
 export default config
