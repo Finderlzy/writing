@@ -96,7 +96,6 @@ $colGap: 5px; // 同 variables.scss 里栅格的 columnGap
   justify-content: space-between;
   gap: 1rem;
   background: var(--light);
-  border-top: 5px solid var(--darkgray);
   border-bottom: 1px solid var(--lightgray);
 
   & h2.page-title {
